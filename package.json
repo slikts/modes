@@ -13,7 +13,10 @@
     "minimist": "*",
     "basic-auth": "*",
     "compression": "*",
-    "graceful-fs": "*"
+    "graceful-fs": "*",
+    "morgan": "*",
+    "serve-static": "*",
+    "body": "4.x.x"
   },
   "devDependencies": {},
   "license": "MIT"

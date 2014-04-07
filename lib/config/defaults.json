@@ -1,28 +1,6 @@
 {
   "restApiPort": 3000,
-  "acl": {
-    "admin": {
-      "*": {
-        "*": {
-          "*": true
-        }
-      }
-    },
-    "user": {
-      "User": {
-        "*": {
-          "read": true
-        },
-        "email": {
-          "write": "own"
-        },
-        "password": {
-          "write": "own"
-        }
-      },
-      "Image": {
-        "*": true
-      }
-    }
-  }
+  "logFormat": "default",
+  "staticMaxAge": 0,
+  "connectTimeout": 300
 }

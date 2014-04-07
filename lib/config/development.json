@@ -1,3 +1,5 @@
 {
-  "dbUri": "mongodb://localhost/modes-dev"
+  "dbUri": "mongodb://localhost/modes-dev",
+  "logFormat": "dev",
+  "connectTimeout": 50
 }
