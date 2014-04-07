@@ -1,0 +1,20 @@
+{
+  "name": "modes",
+  "description": "image archive",
+  "version": "0.1.0",
+  "author": "slikts <dabas@untu.ms>",
+  "dependencies": {
+    "bcrypt": "0.7.x",
+    "express": "4.x.x",
+    "mongoose-auto-increment": "3.0.x",
+    "object-assign": "*",
+    "slug": "*",
+    "response-time": "*",
+    "minimist": "*",
+    "basic-auth": "*",
+    "compression": "*",
+    "graceful-fs": "*"
+  },
+  "devDependencies": {},
+  "license": "MIT"
+}
