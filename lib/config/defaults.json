@@ -1,4 +1,5 @@
 {
+  "dbUri": "mongodb://localhost/modes",
   "restApiPort": 3000,
   "logFormat": "default",
   "staticMaxAge": 0,

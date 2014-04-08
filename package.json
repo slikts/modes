@@ -11,12 +11,12 @@
     "slug": "*",
     "response-time": "*",
     "minimist": "*",
-    "basic-auth": "*",
     "compression": "*",
     "graceful-fs": "*",
     "morgan": "*",
     "serve-static": "*",
-    "body": "4.x.x"
+    "body": "4.x.x",
+    "body-parser": "*"
   },
   "devDependencies": {},
   "license": "MIT"
