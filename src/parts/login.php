@@ -10,8 +10,8 @@
 		</tr>
 		<tr class="login-remember row">
 			<td colspan="2">
-				<input type="checkbox" name="remember" id="remember">
-				<label class="cell" for="remember">Remember me</label>
+				<input type="checkbox" name="autologin" id="autologin">
+				<label class="cell" for="autologin">Remember me</label>
 			</td>
 		</tr>
 		<tr class="login-submit">

@@ -176,6 +176,40 @@ input[type=submit]:active {
   color: #ff0066;
 }
 
+/* line 103, ../../sass/_common.scss */
+#header-nav .nav-home:before {
+  display: none;
+}
+/* line 106, ../../sass/_common.scss */
+#header-nav li {
+  display: inline-block;
+}
+/* line 108, ../../sass/_common.scss */
+#header-nav li:before {
+  content: '| ';
+}
+/* line 113, ../../sass/_common.scss */
+#header-nav .active a {
+  font-weight: bold;
+}
+
+/* line 120, ../../sass/_common.scss */
+.header-title a {
+  margin-right: 12px;
+}
+/* line 122, ../../sass/_common.scss */
+.header-title a:before {
+  display: inline-block;
+  content: ' ';
+  background: url("../favicon.ico");
+  vertical-align: middle;
+  margin-right: 6px;
+  position: relative;
+  top: -2px;
+  width: 16px;
+  height: 16px;
+}
+
 /* line 2, ../../sass/_login.scss */
 .login-form label {
   text-align: right;

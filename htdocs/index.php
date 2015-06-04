@@ -58,22 +58,25 @@ if (!empty($_POST)) {
 
 			return;
 		}
+		if (isset($_POST['autologin'])) {
+			create_autologin();
+		}
 
 		redirect_back();
 	}
 
-
 	return;
 }
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user'])
+	&& (!isset($_COOKIE['autologin']) || !autologin($_COOKIE['autologin']))) {
 	template('login', array('title' => 'Log in'));
 
 	return;
 }
 
 if (!empty($path) && $path[0] === 'logout') {
-	if (isset($path[1]) && log_out($path[1])) {
+	if (!isset($_SESSION['user']) || (isset($path[1]) && logout($path[1]))) {
 		redirect_home();
 
 		return;
@@ -84,7 +87,22 @@ if (!empty($path) && $path[0] === 'logout') {
 }
 
 if ($path[0] === '') {
-	template('home');
+	template('home', array('title' => 'Upload'));
+
+	return;
+}
+if ($path[0] === 'user') {
+	template('user', array('title' => 'User'));
+
+	return;
+}
+if ($path[0] === 'list') {
+	template('list', array('title' => 'List'));
+
+	return;
+}
+if ($path[0] === 'tags') {
+	template('tags', array('title' => 'Tags'));
 
 	return;
 }

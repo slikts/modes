@@ -11,10 +11,25 @@ namespace modes;
 	<body id="page-id-<?=$part?>">
 		<div id="page-wrap">
 			<header id="page-header">
-				<h1 class="header-title"><a href="<?=WWW_ROOT?>/"><?=NAME?></a> <span><?=$args['title']?></span></h1>
+				<h1 class="header-title"><a href="<?=get_url()?>"><?=NAME?></a> <span><?=$args['title']?></span></h1>
 				<?php if (isset($_SESSION['user'])) : ?>
-				<p class="header-logout"><a href="<?=WWW_ROOT . '/logout/' . short_id()?>">Log out</a> (<?=$_SESSION['user']?>)</p>
+				<ol id="header-nav">
+				<?php
+					$items = array(
+						'Upload' => 'home',
+						'List' => 'list',
+						'Tags' => 'tags',
+						'User' => 'user'
+						);
+				foreach($items as $title => $nav_part) :
+					$cls = $part === $nav_part ? ' active' : '';
+				?>
+				<li class="nav-<?=$nav_part . $cls?>"><a href="<?=get_url($nav_part)?>"><?=$title?></a></li>
+				<?php endforeach; ?>
+					<li class="header-logout"><a href="<?=WWW_ROOT . '/logout/' . short_id()?>">Log out</a> (<?=$_SESSION['user']?>)</li>
+				</ol>
 				<?php endif; ?>
+
 
 			</header>
 			<?php if (!empty($_SESSION['messages'])) : ?>

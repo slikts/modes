@@ -98,3 +98,37 @@ input[type=submit] {
 	font-weight: bold;
 	color: $color-hl;
 }
+
+#header-nav {
+	.nav-home:before {
+		display: none;
+	}
+	li {
+		display: inline-block;
+		&:before {
+			content: '| ';
+		}
+	}
+	.active {
+		a {
+			font-weight: bold;
+		}
+	}
+}
+
+.header-title {
+	a {
+		margin-right: 12px;
+		&:before {
+			display: inline-block;
+			content: ' ';
+			background: url('../favicon.ico');
+			vertical-align: middle;
+			margin-right: 6px;
+			position: relative;
+			top: -2px;
+			width: 16px;
+			height: 16px;
+		}
+	}
+}
