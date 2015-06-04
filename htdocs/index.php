@@ -8,7 +8,7 @@ session_start();
 
 header('Content-Type: text/html; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-header('Cache-Control: post-check=0, pre-check=0', false);
+header('Cache-Control: post-check=0, pre-check=0', FALSE);
 header('Pragma: no-cache');
 
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -60,6 +60,8 @@ if (!empty($_POST)) {
 		}
 		if (isset($_POST['autologin'])) {
 			create_autologin();
+		} elseif (!empty($_COOKIE['bid'])) {
+			unset_cookie('uid');
 		}
 
 		redirect_back();
@@ -69,7 +71,7 @@ if (!empty($_POST)) {
 }
 
 if (!isset($_SESSION['user'])
-	&& (!isset($_COOKIE['autologin']) || !autologin($_COOKIE['autologin']))) {
+	&& (!isset($_COOKIE['autologin']) || !autologin())) {
 	template('login', array('title' => 'Log in'));
 
 	return;

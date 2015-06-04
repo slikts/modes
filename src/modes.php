@@ -34,11 +34,7 @@ function login($user, $password) {
 
 	$stored_password = $result['password'];
 
-	if ($password === $stored_password) {
-		set_password($user, $password);
-
-		return TRUE;
-	} elseif (test_password($password, $stored_password, $result['salt'])) {
+	if (test_password($password, $stored_password, $result['salt'])) {
 		populate_session($user, $result['id']);
 
 		return TRUE;
@@ -80,7 +76,7 @@ function verify_post_nonce() {
 
 function get_random_string($length = 32) {
 	$fp = fopen('/dev/urandom', 'r');
-	$result = base64_encode(fread($fp, 32));
+	$result = base64_encode(fread($fp, $length));
 	fclose($fp);
 	return $result;
 }
@@ -114,14 +110,16 @@ function end_session() {
 function end_autologin() {
 	global $dbh;
 
-	$uid = $_SESSION['uid'];
-	$ip = $_SERVER['REMOTE_ADDR'];
-
 	$delete = $dbh->prepare('DELETE FROM autologin WHERE uid = ? AND ip = ?');
-	$delete->execute(array($uid, $key));
+	$delete->execute(array($_SESSION['uid'], $_SERVER['REMOTE_ADDR']));
 
-	setcookie('autologin', '', time() - LONG_TIME, WWW_ROOT);
-	unset($_COOKIE['autologin']);
+	unset_cookie('autologin');
+	unset_cookie('uid');
+}
+
+function unset_cookie($name) {
+	setcookie($name, '', time() - LONG_TIME, WWW_ROOT);
+	unset($_COOKIE[$name]);
 }
 
 function logout($check) {
@@ -157,63 +155,69 @@ function get_url($part = '') {
 	return WWW_ROOT . '/' . $part;
 }
 
-function autologin($cookie) {
+function autologin() {
 	global $dbh;
 
+	if (empty($_SESSION['uid']) || empty($_SESSION['bid']) || empty($_SESSION['autologin'])) {
+		return FALSE;
+	}
+	$uid = $_COOKIE['uid'];
+	$bid = $_COOKIE['bid'];
+	$key = $_COOKIE['autologin'];
+
 	$ip = $_SERVER['REMOTE_ADDR'];
-	$cookie = explode(',', $cookie);
-	$uid = $cookie[0];
-	$key = $cookie[1];
 
 	$select = $dbh->prepare('SELECT a.hash, b.name FROM autologin a LEFT JOIN users b ON a.uid = b.id
-		WHERE a.uid = ? AND a.ip = ? ');
-	$select->execute(array($uid, $ip));
-
-	if (!$select) {
-		return false;
-	}
-
+		WHERE a.uid = ? AND a.ip = ? AND a.bid = ?');
+	$select->execute(array($uid, $ip, $bid));
 	$results = $select->fetch();
 
-	if (!isset($results['hash'])) {
-		return false;
-	}
+	if (!isset($results['hash']) || $results['hash'] !== autologin_hash($ip, $uid, $key)) {
+		unset_cookie('autologin');
 
-	$autologin = $results['hash'] == autologin_hash($ip, $uid, $key);
+		return FALSE;
+	}
 
 	populate_session($results['name'], $uid);
 
 	$update = $dbh->prepare('UPDATE autologin SET used = current_timestamp WHERE uid = ? AND ip = ?');
 	$update->execute(array($uid, $ip));
 
-	return true;
+	return TRUE;
+}
+
+function get_bid() {
+	return empty($_COOKIE['bid']) ? get_random_string(16) : $_COOKIE['bid'];
 }
 
 function create_autologin() {
 	global $dbh;
 
+	$uid = $_SESSION['uid'];
+	$bid = get_bid();
 	$ip = $_SERVER['REMOTE_ADDR'];
+	$key = get_random_string(24);
+	$key_hash = autologin_hash($ip, $uid, $key);
 
 	$dbh->beginTransaction();
-
-	$key = get_random_string();
-
-	$key_hash = autologin_hash($ip, $key);
-
-	$uid = $_SESSION['uid'];
-
-	$delete = $dbh->prepare('DELETE FROM autologin WHERE uid = ? AND ip = ?');
-	$delete->execute(array($uid, $ip));
-	$insert = $dbh->prepare('INSERT INTO autologin (ip, uid, hash) VALUES (:ip, :uid, :hash)');
+	$delete = $dbh->prepare('DELETE FROM autologin WHERE uid = ? AND ip = ? AND bid = ?');
+	$delete->execute(array($uid, $ip, $bid));
+	$insert = $dbh->prepare('INSERT INTO autologin (ip, uid, hash, bid) VALUES (:ip, :uid, :hash, :bid)');
 	$insert->execute(array(
 		'ip' => $ip,
 		'uid' => $uid,
-		'hash' => $key_hash
+		'hash' => $key_hash,
+		'bid' => $bid
 		));
-
 	$dbh->commit();
 
-	setcookie('autologin', $uid . ',' . $key, time() + LONG_TIME);
+	set_long_cookie('uid', $uid);
+	set_long_cookie('autologin', $key);
+	set_long_cookie('bid', $bid);
+}
+
+function set_long_cookie($name, $value) {
+	setcookie($name, $value, time() + LONG_TIME, WWW_ROOT);
 }
 
 function autologin_hash($ip, $uid, $key) {
