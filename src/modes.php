@@ -28,18 +28,21 @@ function get_dbh() {
 function login($user, $password) {
 	global $dbh;
 
-    $query = $dbh->prepare('SELECT password FROM users WHERE name = ?');
-    $query->execute(array($_POST['user']));
-    $result = $query->fetch();
+	$query = $dbh->prepare('SELECT password, salt FROM users WHERE name = ?');
+	$query->execute(array($user));
+	$result = $query->fetch();
 
-    $password = $result['password'];
-    if ($_POST['password'] === $password) {
-    	$_SESSION['user'] = $user;
+	$stored_password = $result['password'];
 
-        return true;
-    }
+	if ($password === $stored_password) {
+		set_password($user, $password);
 
-    unset ($_SESSION['user']);
+		return true;
+	} elseif (test_password($password, $stored_password, $result['salt'])) {
+		$_SESSION['user'] = $user;
+
+		return true;
+	}
 
 	return false;
 }
@@ -55,7 +58,7 @@ function error($code = 500, $message = '') {
 }
 
 function message($text) {
-	if (count($_SESSION['messages']) === 0) {
+	if (empty($_SESSION['messages'])) {
 		$_SESSION['messages'] = array($text);
 	} else {
 		array_push($_SESSION['messages'], $text);
@@ -74,16 +77,28 @@ function set_password($user, $password) {
 	global $dbh;
 
 	$fp = fopen('/dev/urandom', 'r');
-	$nonce = fread($fp, 32);
+	$salt = base64_encode(fread($fp, 32));
 	fclose($fp);
 
-	hash_hmac('sha512', $password . $nonce, SITE_KEY);
+	$hash = hash_password($password, $salt);
 
-	$query = $dbh->prepare('UPDATE users SET password = :password, nonce = :nonce WHERE name = :name');
+	fb($hash);
+	fb($salt);
+	fb($query);
+
+	$query = $dbh->prepare('UPDATE users SET password = :password, salt = :salt WHERE name = :name');
 	$query->execute(array(
-		'password' => $password,
-		'nonce' => $nonce,
+		'password' => $hash,
+		'salt' => $salt,
 		'name' => $user));
+}
+
+function hash_password($password, $salt) {
+	return base64_encode(hash_hmac('sha512', $password . $salt, SITE_KEY, true));
+}
+
+function test_password($password, $stored_password, $salt) {
+	return hash_password($password, $salt) === $stored_password;
 }
 
 function log_out($check) {
