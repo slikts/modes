@@ -10,7 +10,8 @@
 		</tr>
 		<tr class="login-remember row">
 			<td colspan="2">
-				<input type="checkbox" <?php if (!empty($_COOKIE['uid'])) :?>checked="checked" <?php endif;?>
+				<input type="checkbox"
+					<?php if (!empty($_COOKIE['uid'])) :?>checked="checked"<?php endif;?>
 					name="autologin" id="autologin">
 				<label class="cell" for="autologin">Remember me</label>
 			</td>

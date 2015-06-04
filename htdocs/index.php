@@ -25,7 +25,7 @@ if (count($path) === 0) {
 // Routing
 
 if ($path[0] === 'reset') {
-	error(417);	
+	error_page(404);
 
 	return;
 }
@@ -39,14 +39,14 @@ try {
 	global $dbh;
 	$dbh = get_dbh();
 } catch (\PDOException $e) {
-	error(500, $e->getMessage());
-	
+	error_page(500, $e->getMessage());
+
 	return;
 }
 
 if (!empty($_POST)) {
 	if (!verify_post_nonce()) {
-		error(417);
+		error_page(417);
 
 		return;
 	}
@@ -83,7 +83,7 @@ if (!empty($path) && $path[0] === 'logout') {
 
 		return;
 	}
-	error(417);
+	error_page(417);
 
 	return;
 }
@@ -110,4 +110,4 @@ if ($path[0] === 'tags') {
 }
 
 header('HTTP/1.0 404 Not Found');
-error(404);
+error_page(404);
