@@ -1,0 +1,100 @@
+$color-border: #ccc;
+$color-hl: #f06;
+$font-size: 14px;
+$font-size-small: 14px;
+$font-family: Consolas, Monaco, Andale Mono, sans-serif;
+$line-height: 1.35;
+$p-margin: $font-size * $line-height;
+
+body {
+	background: #fff;
+}
+td,
+th,
+body {
+	font-size: $font-size;
+	line-height: $line-height;
+	font-family: $font-family;
+	font-weight: 400;
+	color: #222;
+}
+a {
+	&:active {
+		color: $color-hl;
+	}
+}
+h1 {
+	font-size: 22px;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-weight: bold;
+}
+
+pre {
+	color: $color-hl;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+p {
+	margin: $p-margin 0;
+}
+
+#page-wrap {
+	padding: 0 $p-margin;
+}
+
+input[type=text],
+input[type=password] {
+	border: 1px solid $color-border;
+	border: none;
+	@include box-shadow(transparentize(#000, .75) 0 1px 3px inset);
+	padding: 0 5px;
+}
+input[type=text],
+input[type=password],
+button,
+input[type=submit] {
+	$y: 22px;
+	font-family: $font-family;
+	height: $y;
+	line-height: $y;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+button,
+input[type=submit] {
+	background: lighten($color-border, 15%);
+	cursor: pointer;
+	@include box-shadow(transparentize(#000, .5) 0 1px 1px);
+	outline: none;
+	border-style: none;
+	&:hover {
+		@include box-shadow(transparentize(#000, .5) 0 2px 2px);
+	}
+	&:active {
+		@include box-shadow(transparentize(#000, .75) 0 1px 1px);
+		//background: lighten($color-border, 5%);
+		//background: darken($color-border, 15%);
+	}
+}
+
+#page-footer {
+	//font-size: $font-size-small;
+}
+
+
+#messages {
+	font-weight: bold;
+	color: $color-hl;
+}

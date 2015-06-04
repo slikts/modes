@@ -1,0 +1,28 @@
+.login-form {
+	label {
+		text-align: right;
+	}
+	td,
+	th {
+		padding: 2px .5em;
+		&:first-child {
+			padding-left: 0;
+		}
+		&:last-child {
+			padding-right: 0;
+		}
+	}
+	th {
+		text-align: right;
+	}
+}
+
+.login-submit {
+	.button {
+		width: 100%;
+	}
+}
+
+.login-reset {
+	//font-size: $font-size-small;
+}

@@ -1,0 +1,2 @@
+#!/bin/sh
+git --work-tree=/home/slikts/modes --git-dir=/home/slikts/modes.git checkout -f
