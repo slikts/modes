@@ -5,13 +5,13 @@ namespace modes;
 <html>
 	<head>
 		<title><?=$args['title']?></title>
-		<link rel="stylesheet" type="text/css" href="<?=WWW_ROOT?>/css/screen.css?<?=VERSION?>" media="screen, projection">
+		<link rel="stylesheet" type="text/css" href="<?=STATIC_ROOT?>/css/screen.css?<?=TOOL_VERSION?>" media="screen, projection">
 		<link rel="icon" type="image/png" href="<?=WWW_ROOT?>/favicon.ico">
 	</head>
 	<body id="page-id-<?=$part?>">
 		<div id="page-wrap">
 			<header id="page-header">
-				<h1 class="header-title"><a href="<?=get_url()?>"><?=NAME?></a> <span><?=$args['title']?></span></h1>
+				<h1 class="header-title"><a href="<?=get_url()?>"><?=TOOL_NAME?></a> <span><?=$args['title']?></span></h1>
 				<?php if (isset($_SESSION['user'])) : ?>
 				<ol id="header-nav">
 				<?php
@@ -44,8 +44,9 @@ namespace modes;
 				<?php require $template_part; ?>
 			</div>
 			<footer id="page-footer">
-				<p><a href="<?=GITHUB_URL?>"><?=NAME?></a> <?=VERSION?></p>
+				<p><a href="<?=TOOL_URL?>"><?=TOOL_NAME?></a> <?=TOOL_VERSION?></p>
 			</footer>
 		</div>
+		<script src="<?=STATIC_ROOT?>/js/dropzone.js"></script>
 	</body>
 </html>

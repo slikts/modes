@@ -11,6 +11,8 @@ if (DEV) {
 
 require __DIR__ . '/template.php';
 require __DIR__ . '/session.php';
+require __DIR__ . '/upload.php';
+require __DIR__ . '/files.php';
 
 function get_dbh() {
 	$dbh = new \PDO(DSN);
@@ -42,4 +44,21 @@ function get_url($part = '') {
 		$part = '';
 	}
 	return WWW_ROOT . '/' . $part;
+}
+
+function format_datetime($datetime) {
+	return date('Y-m-d H:i O', $datetime);
+}
+
+function format_bytes($bytes, $precision = 2)
+{
+    $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB');
+
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+
+    $bytes /= pow(1024, $pow);
+
+    return round($bytes, $precision) . ' ' . $units[$pow];
 }

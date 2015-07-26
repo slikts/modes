@@ -1,4 +1,7 @@
-<form class="login-form" method="post">
+<?php
+namespace modes;
+
+?><form class="login-form" method="post">
 	<table>
 		<tr class="login-user row">
 			<th><label for="user">User</label></th>
@@ -20,6 +23,7 @@
 			<td colspan="2"><input class="button" type="submit" value="<?=$args['title']?>"></td>
 		</tr>
 	</table>
-	<input type="hidden" name="<?=session_name()?>" value="<?=session_id()?>">
+	<?=get_post_nonce_field();?>
+	<input type="hidden" name="login">
 	<p class="login-reset"><a href="<?=WWW_ROOT?>/reset">Can't log in?</a></p>
 </form>

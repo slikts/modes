@@ -1,4 +1,4 @@
-<p>Error <?=$args['code']?></p>
+<p><?=$args['descr']?></p>
 <?php if (DEV && !empty($args['message'])) : ?>
 <pre>
 <?=$args['message']?>

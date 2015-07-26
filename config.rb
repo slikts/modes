@@ -1,3 +1,3 @@
-css_dir = "htdocs/css"
+css_dir = "static/css"
 sass_dir = "sass"
-images_dir = "htdocs/images"
+images_dir = "static/images"
