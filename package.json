@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "author": "slikts <dabas@untu.ms>",
   "dependencies": {
-    "bcrypt": "0.7.x",
+    "bcrypt": "~3.0.0",
     "express": "4.x.x",
-    "mongoose-auto-increment": "3.0.x",
+    "mongoose-auto-increment": "~5.0.1",
     "object-assign": "*",
     "slug": "*",
     "response-time": "*",
@@ -15,7 +15,7 @@
     "graceful-fs": "*",
     "morgan": "*",
     "serve-static": "*",
-    "body": "4.x.x",
+    "body": "^5.1.0",
     "body-parser": "*"
   },
   "devDependencies": {},
